@@ -31,6 +31,20 @@ def main():
         delay_button=page.locator("#trigger-delayed") #Locator取得按鈕
         delay_button.click() #發送點擊事件
 
+        # 等待載入指示器出現
+        page.wait_for_selector("#loading-1", state="visible")
+        print("載入指示器已出現")
+
+        # 等待載入指示器消失
+        page.wait_for_selector("#loading-1", state="hidden")
+        print("載入指示器已消失")
+
+        page.wait_for_selector("div#delayed-result.result.show", state="visible")
+
+        # 取得內容
+        content = page.locator("#delayed-content").text_content()
+        print(f"延遲加載的內容: {content}")
+
         # 等待3秒以觀察效果
         page.wait_for_timeout(3000)
 
