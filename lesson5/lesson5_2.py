@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 
 def main():
     
-    path="https://www.thsrc.com.tw/" # 取得當前資料夾底下html檔案的絕對路徑
+    path="https://www.thsrc.com.tw/" # 網址
 
     with sync_playwright() as p:
         # 啟動瀏覽器
