@@ -23,10 +23,13 @@ def main():
         page.goto(path)
 
         # 等待所有網路資源和動態請求加載完成
-        page.wait_for_load_state("networkidle")
+        page.wait_for_load_state("networkidle")        
 
         # 點擊匹配指定選擇器的元素
-        page.click("#trigger-delayed")
+        # page.click("#trigger-delayed")
+
+        delay_button=page.locator("#trigger-delayed") #Locator取得按鈕
+        delay_button.click() #發送點擊事件
 
         # 等待3秒以觀察效果
         page.wait_for_timeout(3000)

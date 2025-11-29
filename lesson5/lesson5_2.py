@@ -17,6 +17,9 @@ def main():
         # 等待DOM結構已解析完成
         page.wait_for_load_state("domcontentloaded")
 
+        # 取得並點擊按鈕觸發異步操作
+        page.locator("button",has_text="我同意").click()  
+
         # 等待3秒以觀察效果
         page.wait_for_timeout(3000)
 
