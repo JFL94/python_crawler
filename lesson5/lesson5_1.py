@@ -4,7 +4,7 @@ from playwright.sync_api import sync_playwright
 
 def get_html_path(): 
     """回傳html檔案的絕對路徑"""
-    current_dir=os.path.dirname(os.path.abspath(__file__)) #abspath當前檔案絕對路徑(含檔案)，dirname
+    current_dir=os.path.dirname(os.path.abspath(__file__)) #abspath當前目錄絕對路徑(含檔案名稱)，dirname上層目錄絕對路徑
     html_path=os.path.join(current_dir,"waiting_demo.html")
     return f"file://{html_path}"
 
@@ -16,15 +16,19 @@ def main():
         # 啟動瀏覽器
         browser = p.chromium.launch(headless=False,slow_mo=500)
 
-        #開啟新頁面
+        # 開啟新頁面
         page=browser.new_page()
 
-        #訪問頁面
+        # 訪問頁面
         page.goto(path)
+
+        # 等待所有網路資源和動態請求加載完成
+        page.wait_for_load_state("networkidle")
 
         # 等待3秒以觀察效果
         page.wait_for_timeout(3000)
 
+        # 關閉瀏覽器
         browser.close()
 
 
