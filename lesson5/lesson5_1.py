@@ -1,12 +1,32 @@
 import os
 from playwright.sync_api import sync_playwright
 
-
 def get_html_path(): 
     """回傳html檔案的絕對路徑"""
     current_dir=os.path.dirname(os.path.abspath(__file__)) # abspath當前目錄絕對路徑(含檔案名稱)，dirname上層目錄絕對路徑
     html_path=os.path.join(current_dir,"waiting_demo.html") # join多個路徑字串合併成一個完整路徑
     return f"file://{html_path}"
+
+def demo1_delay_emement(page):
+    # 點擊匹配指定選擇器的元素
+    # page.click("#trigger-delayed")
+
+    delay_button=page.locator("#trigger-delayed") #Locator取得按鈕
+    delay_button.click() #發送點擊事件
+
+    # 等待載入指示器出現
+    page.wait_for_selector("#loading-1", state="visible")
+    print("載入指示器已出現")
+
+    # 等待載入指示器消失
+    page.wait_for_selector("#loading-1", state="hidden")
+    print("載入指示器已消失")
+
+    page.wait_for_selector("div#delayed-result.result.show", state="visible")
+
+    # 取得內容
+    content = page.locator("#delayed-content").text_content()
+    print(f"延遲加載的內容: {content}")
 
 def main():
     
@@ -23,27 +43,9 @@ def main():
         page.goto(path)
 
         # 等待所有網路資源和動態請求加載完成
-        page.wait_for_load_state("networkidle")        
+        page.wait_for_load_state("networkidle")  
 
-        # 點擊匹配指定選擇器的元素
-        # page.click("#trigger-delayed")
-
-        delay_button=page.locator("#trigger-delayed") #Locator取得按鈕
-        delay_button.click() #發送點擊事件
-
-        # 等待載入指示器出現
-        page.wait_for_selector("#loading-1", state="visible")
-        print("載入指示器已出現")
-
-        # 等待載入指示器消失
-        page.wait_for_selector("#loading-1", state="hidden")
-        print("載入指示器已消失")
-
-        page.wait_for_selector("div#delayed-result.result.show", state="visible")
-
-        # 取得內容
-        content = page.locator("#delayed-content").text_content()
-        print(f"延遲加載的內容: {content}")
+        demo1_delay_emement(page)            
 
         # 等待3秒以觀察效果
         page.wait_for_timeout(3000)
